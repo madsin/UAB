@@ -83,7 +83,7 @@ void do_op ( double *const ABt, double *const BA, double *restrict c, int N )
   int i, j, k;
   double register temp = 0;
 
-#pragma omp parallel for private(j) reduction(+:temp)
+#pragma omp parallel for private(j, k)
   for (i=0; i<N; i++) {
     for (j=0; j<N; j++) {
       for (k=0; k<2*N; k++) {
@@ -93,17 +93,6 @@ void do_op ( double *const ABt, double *const BA, double *restrict c, int N )
       temp = 0;
     }
   }
-}
-
-void mat_transpose (double *const M, double *Mt, int N)
-{
-  int j, k;
-
-  for (k=0; k<N; k++) 
-    for (j=k; j<N; j++) {
-      Mt[k*N+j] = M[j*N+k];
-      Mt[j*N+k] = M[k*N+j];
-    }
 }
 
 //////// MAIN ////////////
@@ -120,19 +109,17 @@ int main (int argc, char **argv)
   }
 
   // dynamic allocation of 2-D matrices
-  A  = (double *) malloc ( N*N*sizeof(double));
-  B  = (double *) malloc ( N*N*sizeof(double));
-  Bt = (double *) malloc ( N*N*sizeof(double));
-  C  = (double *) malloc ( N*N*sizeof(double));
+  A   = (double *) malloc ( N*N*sizeof(double));
+  B   = (double *) malloc ( N*N*sizeof(double));
+  Bt  = (double *) malloc ( N*N*sizeof(double));
+  C   = (double *) malloc ( N*N*sizeof(double));
+  ABt = (double *) malloc ( 2*N*N*sizeof(double));
+  BA  = (double *) malloc ( 2*N*N*sizeof(double));
 
   // Dynamic allocation of vectors
   X = (double *) malloc ( N*sizeof(double));
   Y = (double *) malloc ( N*sizeof(double));
 
-  // dynamic allocation of 2-D matrices
-  ABt = (double *) malloc ( 2*N*N*sizeof(double));
-  BA  = (double *) malloc ( 2*N*N*sizeof(double));
-  
   // initial seed for random generation
   srand(1);
 
@@ -149,9 +136,7 @@ int main (int argc, char **argv)
   R +=          checksum_vect (X, N);
   zero_mat      (C, N);
 
-  mat_transpose (B, Bt, N);
-
-// Compose [A Bt] and [B A]
+  // Compose [A Bt] and [B A]
   int i, j;
 
   for (i=0; i<N; i++) {
@@ -160,7 +145,7 @@ int main (int argc, char **argv)
       BA [i*2*N + j] = B[i*N + j];
     }
     for (j=0; j<N; j++) {
-      ABt[i*2*N + (j + N)] = Bt[i*N + j];
+      ABt[i*2*N + (j + N)] = B[j*N + i];
       BA [i*2*N + (j + N)] = A[i*N + j];
     }
   }
@@ -175,3 +160,6 @@ int main (int argc, char **argv)
   free (A);  free (B); free(Bt), free (C);  free (X);  free (Y); free(ABt); free(BA);
   return 0;
 }
+
+
+

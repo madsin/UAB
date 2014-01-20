@@ -81,16 +81,13 @@ void f1_vect ( double *x, double r, int N )
 void do_op ( double *const ABt, double *const BA, double *restrict c, int N )
 {
   int i, j, k;
-  double register temp = 0;
 
 #pragma omp parallel for private(j, k)
   for (i=0; i<N; i++) {
     for (j=0; j<N; j++) {
       for (k=0; k<2*N; k++) {
-        temp += ABt[i*N + k] * BA[j*N + k];
+        c[i*N+j] += ABt[i*2*N + k] * BA[j*2*N + k];
       }
-      c[i*N+j] = temp;
-      temp = 0;
     }
   }
 }

@@ -1,5 +1,5 @@
 -r
-/home/master/master29/Computational Thinking/OpenMP/Vtune/Lab/r000hs
+/home/master/master29/UAB/Computational Thinking/OpenMP/Vtune/Lab/r000hs
 --data-limit-mb=100
 --stack-stitching
 --follow-child
@@ -9,5 +9,5 @@
 --type=cpu:stack
 --interval=10
 --
-/home/master/master29/Computational Thinking/OpenMP/icc_masterOMP_original.out
+/home/master/master29/UAB/Computational Thinking/OpenMP/gcc_masterOMP_v3.out
 2000

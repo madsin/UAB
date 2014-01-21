@@ -3,14 +3,14 @@
 #include <iostream>
 #include <time.h>
 
-#define DEBUG 1
-#define dimM 2
-#define dimN 3
+#define DEBUG 0
+#define dimM 4
+#define dimN 2
 
-void printMat ( double *const M, int size ) {
-	for ( int i = 0; i < size; i++ ) {
-		for ( int j = 0; j < size; j++ ) {
-			std::cout << M[i*size + j] << " ";
+void printMat ( double *const M, const int sizeM, const int sizeN ) {
+	for ( int i = 0; i < sizeM; i++ ) {
+		for ( int j = 0; j < sizeN; j++ ) {
+			std::cout << M[i*sizeN + j] << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -20,6 +20,7 @@ int main ( int argc, char **argv ) {
     int retVal;
     int numTasks, rank, stepSize;
     double *A, *Bt, *C, *myA, *myC;
+    double times[4];
 
     /* Initialize MPI task */
     retVal = MPI_Init ( &argc, &argv );
@@ -38,56 +39,80 @@ int main ( int argc, char **argv ) {
     	return -1;
     }
 
+    /* Take time */
+    times[0] = MPI_Wtime();
+
     /* Initialization */
-    Bt  = (double *) malloc ( dimM * dimM * sizeof(double) );
-    myA = (double *) malloc ( dimM * sizeof(double) );
-    myC = (double *) malloc ( dimM * sizeof(double) );
+    stepSize = dimM / numTasks;
+    if ( (DEBUG) && (rank == 0) ) std::cout << "stepSize = " << stepSize << std::endl;
+
+    Bt  = (double *) malloc ( dimM * dimN * sizeof(double) );
+    myA = (double *) malloc ( stepSize * dimN * sizeof(double) );
+    myC = (double *) malloc ( stepSize * dimM * sizeof(double) );
 
     if ( rank == 0 ) {
-        A  = (double *) malloc ( dimM * dimM * sizeof(double) );
+        A  = (double *) malloc ( dimM * dimN * sizeof(double) );
         C  = (double *) malloc ( dimM * dimM * sizeof(double) );
 
         srand ( time(NULL) );
         for ( int i = 0; i < dimM; i++ ) {
-        	for ( int j = 0; j < dimM; j++ ) {
+        	for ( int j = 0; j < dimN; j++ ) {
         		/* A, B random double in [0.5, 1.5] */
-        		A [i*dimM + j] = 0.5 + ( (double) rand() / RAND_MAX );
-        		Bt[i*dimM + j] = 0.5 + ( (double) rand() / RAND_MAX );
-        		C [i*dimM + j] = 0;
+        		A [i*dimN + j] = 0.5 + ( (double) rand() / RAND_MAX );
+        		Bt[j*dimM + i] = 0.5 + ( (double) rand() / RAND_MAX );
+        	}
+        	for ( int j = 0; j < dimM; j++ ) {
+        		C[i*dimM + j] = 0;
         	}
         }
+
+        if (DEBUG) {
+			std::cout << "A=" << std::endl;
+			printMat ( A, dimM, dimN );
+			std::cout << "Bt=" << std::endl;
+			printMat ( Bt, dimM, dimN );
+    	}
     }
-    for ( int i = 0; i < dimM; i++ ) {
+    for ( int i = 0; i < stepSize*dimN; i++ ) {
     	myA[i] = 0;
+    }
+    for ( int i = 0; i < stepSize*dimM; i++ ) {
     	myC[i] = 0;
     }
 
     /* Divide data */
     /* Broadcast B */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Bcast()" << std::endl;
-    MPI_Bcast ( Bt, dimM*dimM, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+    MPI_Bcast ( Bt, dimM*dimN, MPI_DOUBLE, 0, MPI_COMM_WORLD );
 
     /* Scatter A */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter()" << std::endl;
-    MPI_Scatter ( A, dimM, MPI_DOUBLE, myA, dimM, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+    MPI_Scatter ( A, stepSize*dimN, MPI_DOUBLE, myA, stepSize*dimN, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     if ( (DEBUG) && ( dimM < 8 ) ) {
     	std::cout << "P" << rank << ": myA = ";
-    	for ( int i = 0; i < dimM; i++ ) {
+    	for ( int i = 0; i < stepSize*dimN; i++ ) {
     		std::cout << myA[i] << " ";
     	}
     	std::cout << std::endl;
     }
 
+    /* Take time */
+    times[1] = MPI_Wtime();
+
     /* Calculation */
     if (DEBUG) std::cout << "P" << rank << ": Calculation()" << std::endl;
-    for ( int i = 0; i < dimM; i++ ) {
+    for ( int i = 0; i < stepSize; i++ ) {
     	for ( int j = 0; j < dimM; j++ ) {
-    		myC[i] += myA[j] * Bt[i*dimM + j];
+    		for ( int k = 0; k < dimN; k++ ) {
+    			myC[i*dimM + j] += myA[i*dimN + k] * Bt[(i+j)*dimN + k];
+    		}
     	}
     }
+    /* Take time */
+    times[2] = MPI_Wtime();
     if ( (DEBUG) && ( dimM < 8 ) ) {
     	std::cout << "P" << rank <<": myC = ";
-    	for ( int i = 0; i < dimM; i++ ) {
+    	for ( int i = 0; i < stepSize*dimM; i++ ) {
     		std::cout << myC[i] << " ";
     	}
     	std::cout << std::endl;
@@ -95,21 +120,24 @@ int main ( int argc, char **argv ) {
 
 	/* Data gathering */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Gather()" << std::endl;
-    MPI_Gather( myC, dimM, MPI_DOUBLE, C, dimM, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+    MPI_Gather( myC, stepSize*dimM, MPI_DOUBLE, C, stepSize*dimM, MPI_DOUBLE, 0, MPI_COMM_WORLD );
 
 	/* Print results */
     if ( DEBUG && (rank == 0) && (dimM <= 8) ) {
-		std::cout << "A=" << std::endl;
-		printMat ( A, dimM );
-		std::cout << "Bt=" << std::endl;
-		printMat ( Bt, dimM );
 		std::cout << "C=" << std::endl;
-		printMat ( C, dimM );
+		printMat ( C, dimM, dimM );
     }
 
     /* Finalize MPI task */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;
     retVal = MPI_Finalize();
+
+    /* Take time */
+    times[3] = MPI_Wtime();
+
+    /* Print timing results */
+    std::cout << "P" << rank << ": Execution time = "   << (times[3] - times[0]) << "s" << std::endl
+    		  << "P" << rank << ": Calculation time = " << (times[2] - times[1]) << "s" << std::endl;
 
 	/* Free memory */
     free(myA); free(Bt); free(myC);

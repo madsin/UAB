@@ -13,28 +13,28 @@
   <target_settings>
    <selected_workload type="string">launch</selected_workload>
    <result_pattern type="string">r@@@{at}</result_pattern>
-   <result_dir type="string">/home/master/master29/Computational Thinking/OpenMP/Vtune/Lab</result_dir>
+   <result_dir type="string">/home/master/master29/UAB/Computational Thinking/OpenMP/Vtune/Lab</result_dir>
    <workloads>
     <launch type="pointer" type_id="dasID_cctrl2::ApplicationWorkload" ptr_type="dasID_cctrl2::IWorkload">
      <workload>
       <targetName type="string">launch</targetName>
       <launch_app.app_parameters type="string">2000</launch_app.app_parameters>
-      <result_directory.path type="string">/home/master/master29/Computational Thinking/OpenMP/Vtune/Lab/r@@@{at}</result_directory.path>
-      <launch_app.app_to_launch type="string">/home/master/master29/Computational Thinking/OpenMP/icc_masterOMP_v2.out</launch_app.app_to_launch>
-      <launch_app.working_folder type="string">/home/master/master29/Computational Thinking/OpenMP</launch_app.working_folder>
+      <result_directory.path type="string">/home/master/master29/UAB/Computational Thinking/OpenMP/Vtune/Lab/r@@@{at}</result_directory.path>
+      <launch_app.app_to_launch type="string">/home/master/master29/UAB/Computational Thinking/OpenMP/gcc_masterOMP_v3.out</launch_app.app_to_launch>
+      <launch_app.working_folder type="string">/home/master/master29/UAB/Computational Thinking/OpenMP</launch_app.working_folder>
       <search_directories type="bag"/>
      </workload>
     </launch>
     <attach type="pointer" type_id="dasID_cctrl2::AttachWorkload" ptr_type="dasID_cctrl2::IWorkload">
      <workload>
       <targetName type="string">attach</targetName>
-      <result_directory.path type="string">/home/master/master29/Computational Thinking/OpenMP/Vtune/Lab/r@@@{at}</result_directory.path>
+      <result_directory.path type="string">/home/master/master29/UAB/Computational Thinking/OpenMP/Vtune/Lab/r@@@{at}</result_directory.path>
      </workload>
     </attach>
     <system type="pointer" type_id="dasID_cctrl2::SystemWideWorkload" ptr_type="dasID_cctrl2::IWorkload">
      <workload>
       <targetName type="string">system</targetName>
-      <result_directory.path type="string">/home/master/master29/Computational Thinking/OpenMP/Vtune/Lab/r@@@{at}</result_directory.path>
+      <result_directory.path type="string">/home/master/master29/UAB/Computational Thinking/OpenMP/Vtune/Lab/r@@@{at}</result_directory.path>
      </workload>
     </system>
    </workloads>

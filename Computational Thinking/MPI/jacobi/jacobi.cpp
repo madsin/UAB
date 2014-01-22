@@ -6,6 +6,7 @@
 
 #define DEBUG 0
 #define C 1
+//#define DIM 4
 #define DIM (1024*C)
 #define PRECISION (1.0e-6)
 
@@ -29,6 +30,7 @@ int main ( int argc, char **argv ) {
     int retVal;
     int numTasks, rank, stepSize;
     int itCount = 0;
+    double times[2];
     double epsilon = 1;
     double *A, *b, *x, *x_old, *myA, *myB, *myX_new;
 
@@ -40,6 +42,9 @@ int main ( int argc, char **argv ) {
     }
     MPI_Comm_size ( MPI_COMM_WORLD, &numTasks );
     MPI_Comm_rank ( MPI_COMM_WORLD, &rank );
+
+    /* Take time */
+    times[0] = MPI_Wtime();
 
     /* Only synchronous data division supported */
     if ( DIM % numTasks ) {
@@ -164,7 +169,7 @@ int main ( int argc, char **argv ) {
 
     			myX_new[i] -= myA[i*DIM + j] * x[j];
     		}
-    		myX_new[i] /= myA[i*DIM + i];
+    		myX_new[i] /= myA[i*DIM + i + rank*stepSize];
     		if (DEBUG) std::cout << "P" << rank << ": myX_new[" << i << "]="
     				             << myX_new[i] << std::endl;
     	}
@@ -195,8 +200,15 @@ int main ( int argc, char **argv ) {
     	MPI_Bcast ( &epsilon, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     }
 
+    /* Take time */
+    times[1] = MPI_Wtime();
+
     /* Finalize MPI task */
     retVal = MPI_Finalize();
+
+    /* Print results */
+    if ( rank == 0 ) std::cout << "Total of " << itCount << " iterations performed" << std::endl;
+    std::cout << "P" << rank << ": Execution time = " << (times[1] - times[0]) << std::endl;
 
     /* Free Memory */
     if ( rank == 0) {

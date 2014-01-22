@@ -4,8 +4,6 @@
 #include <time.h>
 
 #define DEBUG 0
-#define dimM 4
-#define dimN 2
 
 void printMat ( double *const M, const int sizeM, const int sizeN ) {
 	for ( int i = 0; i < sizeM; i++ ) {
@@ -19,6 +17,7 @@ void printMat ( double *const M, const int sizeM, const int sizeN ) {
 int main ( int argc, char **argv ) {
     int retVal;
     int numTasks, rank, stepSize;
+    int dimM, dimN;
     double *A, *Bt, *C, *myA, *myC;
     double times[4];
 
@@ -32,15 +31,28 @@ int main ( int argc, char **argv ) {
     MPI_Comm_size ( MPI_COMM_WORLD, &numTasks );
     MPI_Comm_rank ( MPI_COMM_WORLD, &rank );
 
+    /* Parse arguments */
+    if ( rank == 0 ) {
+		if ( argc != 3 ) {
+			std::cout << "Usage: ./matul dimM dimN" << std::endl;
+			MPI_Abort ( MPI_COMM_WORLD, -1 );
+			return -1;
+		} else {
+			dimM = atoi(argv[1]);
+			dimN = atoi(argv[2]);
+			if (DEBUG) std::cout << "dimM = " << dimM
+					           << ", dimN = " << dimN << std::endl;
+		}
+    }
+    MPI_Bcast ( &dimM, 1, MPI_INT, 0, MPI_COMM_WORLD );
+    MPI_Bcast ( &dimN, 1, MPI_INT, 0, MPI_COMM_WORLD );
+
     /* Right now, only synchronous data division implemented */
     if ( ( dimM % numTasks ) && ( rank == 0 ) ) {
     	std::cout << "dimM % numTasks != 0, aborting" << std::endl;
     	MPI_Abort( MPI_COMM_WORLD, -1 );
     	return -1;
     }
-
-    /* Take time */
-    times[0] = MPI_Wtime();
 
     /* Initialization */
     stepSize = dimM / numTasks;
@@ -79,6 +91,9 @@ int main ( int argc, char **argv ) {
     for ( int i = 0; i < stepSize*dimM; i++ ) {
     	myC[i] = 0;
     }
+
+    /* Take time */
+    times[0] = MPI_Wtime();
 
     /* Divide data */
     /* Broadcast B */
@@ -128,12 +143,12 @@ int main ( int argc, char **argv ) {
 		printMat ( C, dimM, dimM );
     }
 
+    /* Take time */
+    times[3] = MPI_Wtime();
+
     /* Finalize MPI task */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;
     retVal = MPI_Finalize();
-
-    /* Take time */
-    times[3] = MPI_Wtime();
 
     /* Print timing results */
     std::cout << "P" << rank << ": Execution time = "   << (times[3] - times[0]) << "s" << std::endl
@@ -143,17 +158,6 @@ int main ( int argc, char **argv ) {
     free(myA); free(Bt); free(myC);
 	if ( rank == 0 ) {
 		free(A); free(C);
-	}
-
-	/* Checksum calc */
-	if ( rank == 0 ) {
-		double checksum_parallel = 0;
-		for ( int i = 0; i < dimM; i++ ) {
-			for ( int j = 0; j < dimM; j++ ) {
-				checksum_parallel += C[i*dimM + j];
-			}
-		}
-		std::cout << "Parallel checksum result = " << checksum_parallel << std::endl;
 	}
 
     return 0;

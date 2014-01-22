@@ -1,15 +1,15 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]
+if [ $# -ne 3 ]
 then
-    echo "./run.sh numtasks"
+    echo "./run.sh numtasks dimM dimN"
     exit -1
 fi
 
-if [ ! -f mpi ]
+if [ ! -f matmul ]
 then
     echo "Executable not found"
     exit -1
 fi
 
-openmpirun -np $1 mpi
+openmpirun -np $1 matmul $2 $3

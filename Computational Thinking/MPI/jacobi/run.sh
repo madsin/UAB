@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]
+if [ $# -ne 2 ]
 then
-    echo "./run.sh numtasks"
+    echo "./run.sh numtasks c"
     exit -1
 fi
 
@@ -12,4 +12,4 @@ then
     exit -1
 fi
 
-openmpirun -np $1 jacobi
+openmpirun -np $1 jacobi $2

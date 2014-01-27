@@ -1,0 +1,22 @@
+##############
+# Temp files #
+##############
+*~
+*.out
+*.log
+
+######################
+# OS dependent files #
+######################
+Makefile
+
+#############################
+# Repository specific files #
+#############################
+jacobi
+matmul
+Vtune/
+*old
+Rain
+RainS
+saxpy

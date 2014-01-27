@@ -6,9 +6,6 @@ then
 	exit -1
 fi
 
-# Clear old logs
-rm -rf *log
-
 # Measure performance of all existent executables
 for EXEC in $(ls *out)
 do

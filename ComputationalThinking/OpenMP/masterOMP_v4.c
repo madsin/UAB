@@ -100,7 +100,7 @@ void mat_transpose (double *const M, double *Mt, int N)
   int j, k;
 
   for (k=0; k<N; k++) 
-    for (j=k+1; j<N; j++) {
+    for (j=0; j<N; j++) {
       Mt[k*N + j] = M[j*N + k];
     }
 }

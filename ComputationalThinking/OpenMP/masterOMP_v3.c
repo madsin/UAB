@@ -81,14 +81,17 @@ void f1_vect ( double *x, double r, int N )
 void do_op ( double *const a, double *const b, double *const bt, double *restrict c, int N )
 {
   int i, j, k;
+  double register temp = 0;
 
-#pragma omp parallel for private(j, k)
   for (i=0; i<N; i++)
-    for (j=0; j<N; j++)
+    for (j=0; j<N; j++) {
       for (k=0; k<N; k++) {
-        c[i*N + j] += a [i*N + k] * b[j*N + k];
-        c[i*N + j] += bt[i*N + k] * a[j*N + k];
+        temp += a [i*N + k] * b[j*N + k];
+        temp += bt[i*N + k] * a[j*N + k];
       }
+      c[i*N + j] = temp;
+      temp = 0;
+    }
 }
 
 void mat_transpose (double *const M, double *Mt, int N)
@@ -96,7 +99,7 @@ void mat_transpose (double *const M, double *Mt, int N)
   int j, k;
 
   for (k=0; k<N; k++) 
-    for (j=k+1; j<N; j++) {
+    for (j=0; j<N; j++) {
       Mt[k*N + j] = M[j*N + k];
     }
 }

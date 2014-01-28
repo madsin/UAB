@@ -27,9 +27,10 @@ unsigned int TotalDaysRainInSite ( thrust::device_vector<unsigned int>& S,
 }
 
 unsigned int TotalSites ( thrust::device_vector<unsigned int>& S) {
+  int *new_end = thrust::unique ( S.begin(), S.end() )
   thrust::device_vector<unsigned int> unique;
-  unique = S(S.begin(), thrust::unique(S.begin(),S.end()));
-  return unique.size;
+  thrust::copy ( S.begin, new_end, unique.begin() );
+  return unique.size();
 }
 
 unsigned int TotalRainIN ( thrust::device_vector<unsigned int>& S, 

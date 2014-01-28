@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # 10 minutes and test.q for now TODO
-export QUEUE="test.q"
-export QSUB0="qsub -q ${QUEUE} -v SGE_QMASTER_PORT -cwd -l h_rt=60"
+export QUEUE="aolin.q"
+export QSUB0="qsub -q ${QUEUE} -v SGE_QMASTER_PORT -cwd -l h_rt=900"
 
 export MPI_DIR=/home/master/master29/UAB/ComputationalThinking/MPI
 
@@ -14,7 +14,7 @@ echo "#########################"
 echo "# Matrix Multiplication #"
 echo "#########################"
 
-for DIM in 1024 2048
+for DIM in 2048 4096
 do
     for N_TASKS in 8 16 32
     do
@@ -32,7 +32,7 @@ echo "#        Jacobi         #"
 echo "#########################"
 
 # Jacobi
-for C in 2
+for C in 2 3
 do
     for N_TASKS in 8 16 32
     do

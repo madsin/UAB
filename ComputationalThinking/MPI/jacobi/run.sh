@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#source /etc/profile.d/modules.sh
+source /etc/profile.d/modules.sh
 module load openmpi/1.6.3
 
 if [ $# -ne 2 ]

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#source /etc/profile.d/modules.sh
-module load openmpi/1.6.3
-
 if [ $# -ne 3 ]
 then
     echo "./run.sh numtasks dimM dimN"

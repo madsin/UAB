@@ -151,8 +151,8 @@ int main ( int argc, char **argv ) {
     retVal = MPI_Finalize();
 
     /* Print timing results */
-    std::cout << "P" << rank << ": Execution time = "   << (times[3] - times[0]) << "s" << std::endl
-    		  << "P" << rank << ": Calculation time = " << (times[2] - times[1]) << "s" << std::endl;
+    std::cout << "P" << rank << ": Execution time = "   << (times[3] - times[0]) << "s" 
+              << ", Calculation time = " << (times[2] - times[1]) << "s" << std::endl;
 
 	/* Free memory */
     free(myA); free(Bt); free(myC);

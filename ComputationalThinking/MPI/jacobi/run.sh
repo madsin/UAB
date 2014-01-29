@@ -15,4 +15,4 @@ then
     exit -1
 fi
 
-echo $(mpirun -np $1 jacobi $2)
+mpirun -np $1 jacobi $2

@@ -14,34 +14,43 @@ echo "#########################"
 echo "# Matrix Multiplication #"
 echo "#########################"
 
-for DIM in 2048 4096
+# For quadratic no. of tasks betwen 10..80
+for N_TASKS in 4 9 16 25 36 49 64
 do
-    for N_TASKS in 8 16 32
+    # Assume dimM = dimO = dimN
+    for DIM in 1024 2048 4096 8192
     do
-        cd $MPI_DIR/matmul
-      	QSUB="$QSUB0 -N matmul_${N_TASKS}_${DIM}.log -pe mpi-RR $N_TASKS run.sh $N_TASKS $DIM $DIM"
+        # Slow Matmul
+        cd ${MPI_DIR}/matmul/
+        QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
+        echo $QSUB
+        echo $($QSUB)
+        echo "#########################"
+
+        # Fast Matmul
+        cd ${MPI_DIR}/matmul/
+        QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
         echo $QSUB
         echo $($QSUB)
         echo "#########################"
     done
 done
-
-# Matrix multiplication
-echo "#########################"
-echo "#        Jacobi         #"
-echo "#########################"
 
 # Jacobi
-for C in 2 3
-do
-    for N_TASKS in 8 16 32
-    do
-        cd $MPI_DIR/jacobi
-        QSUB="$QSUB0 -N jacobi_${N_TASKS}_${C}.log -pe mpi-RR $N_TASKS run.sh $N_TASKS $C"
-        echo $QSUB
-        echo $($QSUB)
-        echo "#########################"
-    done
-done
+#echo "#########################"
+#echo "#        Jacobi         #"
+#echo "#########################"
+#
+#for C in 2 3
+#do
+#    for N_TASKS in 8 16 32
+#    do
+#        cd $MPI_DIR/jacobi
+#        QSUB="$QSUB0 -N jacobi_${N_TASKS}_${C}.log -pe mpi-RR $N_TASKS run.sh $N_TASKS $C"
+#        echo $QSUB
+#        echo $($QSUB)
+#        echo "#########################"
+#    done
+#done
 
 exit 0

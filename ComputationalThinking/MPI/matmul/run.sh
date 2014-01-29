@@ -12,4 +12,4 @@ then
     exit -1
 fi
 
-echo $(mpirun -np $1 matmul $2 $3)
+mpirun -np $1 matmul $2 $3

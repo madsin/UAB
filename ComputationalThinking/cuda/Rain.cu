@@ -27,21 +27,35 @@ unsigned int TotalDaysRainInSite ( thrust::device_vector<unsigned int>& S,
 }
 
 unsigned int TotalSites ( thrust::device_vector<unsigned int>& S) {
-  int *new_end = thrust::unique ( S.begin(), S.end() )
-  thrust::device_vector<unsigned int> unique;
-  thrust::copy ( S.begin, new_end, unique.begin() );
-  return unique.size();
+  thrust::sort ( S.begin(), S.end() );
+  return thrust::distance( S.begin(), thrust::unique ( S.begin(), S.end() ) );
 }
 
 unsigned int TotalRainIN ( thrust::device_vector<unsigned int>& S, 
                            thrust::device_vector<unsigned int>& M, 
-                           const unsigned int St)
-  { return 0; }
+                           const unsigned int St) {
+  int sum = 0;
+
+  for ( int i = 0; i < S.size(); i++ ) {
+    if ( S[i] == St ) sum += M[i];
+  }
+
+  return sum;
+}
+
+struct greater_equal {
+  __host__ __device__
+  bool operator() ( int x, int y ) {
+    return x >= y;
+  }
+}
 
 unsigned int TotalRainBetween ( thrust::device_vector<unsigned int>& D, 
                                 thrust::device_vector<unsigned int>& M, 
-                                const unsigned int Start, const unsigned int End)
-  { return 0; }
+                                const unsigned int Start, const unsigned int End) {
+  it = thrust::find_if ( D.begin(), D.end(), greater_than
+  return 0;
+}
 
 unsigned int TotalDaysWithRain ( thrust::device_vector<unsigned int>& D) { return 0; }
 

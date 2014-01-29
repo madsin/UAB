@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define ROWS_PER_THREAD_C  (rowsPerThreadA)
 #define COLS_PER_THREAD_C  (rowsPerThreadBt)
 
@@ -28,6 +28,7 @@ int main ( int argc, char **argv ) {
     int rowsPerThreadA, rowsPerThreadBt;
     int threadsPerRowCol;
     double *A, *Bt, *C, *myA, *myBt, *myC;
+    double times[4];
 
     /* Initialize MPI task */
     retVal = MPI_Init ( &argc, &argv );
@@ -140,6 +141,9 @@ int main ( int argc, char **argv ) {
     	myC[i] = 0;
     }
 
+    /* Take time */
+    times[0] = MPI_Wtime();
+
     /***************/
     /* Divide data */
     /***************/
@@ -150,7 +154,6 @@ int main ( int argc, char **argv ) {
     	if (DEBUG) std::cout << "P" << rank << ": MPI_ISend()" << std::endl;
     	for ( int dest = 0; dest < numTasks; dest++ ) {
     		start = rowsPerThreadA*dimN*floor((double) dest/threadsPerRowCol);
-    		std::cout << "Start = " << start << std::endl;
     		/* Non-blocking send */
     		MPI_Isend ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD, &reqsA[dest] );
 
@@ -182,6 +185,9 @@ int main ( int argc, char **argv ) {
     	}
     }
 
+    /* Take time */
+    times[1] = MPI_Wtime();
+
     /* Calculation */
     if (DEBUG) std::cout << "P" << rank << ": Calculation()" << std::endl;
     for ( int i = 0; i < ROWS_PER_THREAD_C; i++ ) {
@@ -191,6 +197,10 @@ int main ( int argc, char **argv ) {
     		}
     	}
     }
+
+    /* Take time */
+    times[2] = MPI_Wtime();
+
     if (DEBUG) {
     	std::cout << "P" << rank <<": myC = ";
     	for ( int i = 0; i < ROWS_PER_THREAD_C*COLS_PER_THREAD_C; i++ ) {
@@ -204,6 +214,9 @@ int main ( int argc, char **argv ) {
     MPI_Gather ( myC, ROWS_PER_THREAD_C*COLS_PER_THREAD_C, MPI_DOUBLE,
     		     C, ROWS_PER_THREAD_C*COLS_PER_THREAD_C, MPI_DOUBLE,
     		     0, MPI_COMM_WORLD );
+
+    /* Take time */
+    times[3] = MPI_Wtime();
 
     /* Data restructuring */
     double *Cr;
@@ -231,6 +244,10 @@ int main ( int argc, char **argv ) {
 		printMat ( Cr, dimM, dimO );
     }
 
+	/* Print results */
+	std::cout << "P" << rank << ": Execution time: " << times[3]-times[0]
+	          << ", Calculation time: " << times[2]-times[1] << std::endl;
+
     /* Finalize MPI task */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;
     retVal = MPI_Finalize();
@@ -243,3 +260,4 @@ int main ( int argc, char **argv ) {
 
     return 0;
 }
+

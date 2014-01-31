@@ -14,11 +14,10 @@ echo "#########################"
 echo "# Matrix Multiplication #"
 echo "#########################"
 
-# For quadratic no. of tasks betwen 10..80
-for N_TASKS in 9 16 25 36
+# Assume dimM = dimO = dimN
+for DIM in 1680 3360 5040 6720 8400 
 do
-    # Assume dimM = dimO = dimN
-    for DIM in 1692 3348 5040 6732 8388
+    for N_TASKS in 8 16 24 32 40
     do
         # Slow Matmul
         cd ${MPI_DIR}/matmul/
@@ -28,8 +27,7 @@ do
         echo "#########################"
     done
 
-    # Assume dimM = dimO = dimN
-    for DIM in 1680 3360 5040 6720 8400
+    for N_TASKS in 9 16 25 36
     do
         # Fast Matmul
         cd ${MPI_DIR}/project/

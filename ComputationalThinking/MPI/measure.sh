@@ -15,7 +15,7 @@ echo "# Matrix Multiplication #"
 echo "#########################"
 
 # Assume dimM = dimO = dimN
-for DIM in 1680 3360 5040 6720 8400 
+for DIM in 1920 3360 5280 6720 8640
 do
     for N_TASKS in 8 16 24 32 40
     do
@@ -26,17 +26,21 @@ do
         echo $($QSUB)
         echo "#########################"
     done
-
-    for N_TASKS in 9 16 25 36
-    do
-        # Fast Matmul
-        cd ${MPI_DIR}/project/
-        QSUB="${QSUB0} -N matmul_fast_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM} ${DIM}"
-        echo $QSUB
-        echo $($QSUB)
-        echo "#########################"
-    done
 done
+
+# Assume dimM = dimO = dimN
+#for DIM in 1680 3360 5040 6720 8400 
+#do
+#    for N_TASKS in 9 16 25 36
+#    do
+#        # Fast Matmul
+#        cd ${MPI_DIR}/project/
+#        QSUB="${QSUB0} -N matmul_fast_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM} ${DIM}"
+#        echo $QSUB
+#        echo $($QSUB)
+#        echo "#########################"
+#    done
+#done
 
 # Jacobi
 #echo "#########################"

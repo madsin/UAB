@@ -15,7 +15,7 @@ echo "# Matrix Multiplication #"
 echo "#########################"
 
 # Assume dimM = dimO = dimN
-for DIM in 1920 3360 5280 6720 8640
+for DIM in 1920 #3360 5280 6720 8640
 do
     for N_TASKS in 8 16 24 32 40
     do
@@ -27,6 +27,35 @@ do
         echo "#########################"
     done
 done
+
+# Failed ones
+N_TASKS=24
+DIM=3360
+QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
+echo $QSUB
+echo $($QSUB)
+echo "#########################"
+
+N_TASKS=32
+DIM=3360
+QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
+echo $QSUB
+echo $($QSUB)
+echo "#########################"
+
+N_TASKS=32
+DIM=5200
+QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
+echo $QSUB
+echo $($QSUB)
+echo "#########################"
+
+N_TASKS=8
+DIM=5200
+QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
+echo $QSUB
+echo $($QSUB)
+echo "#########################"
 
 # Assume dimM = dimO = dimN
 #for DIM in 1680 3360 5040 6720 8400 

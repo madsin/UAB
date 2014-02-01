@@ -1,4 +1,5 @@
 #include <mpi.h>
+#include <omp.h>
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
@@ -190,11 +191,16 @@ int main ( int argc, char **argv ) {
 
     /* Calculation */
     if (DEBUG) std::cout << "P" << rank << ": Calculation()" << std::endl;
+    double register temp;
+    omp_set_num_threads(4);
+#pragma omp parallel for private(j, k, temp);
     for ( int i = 0; i < ROWS_PER_THREAD_C; i++ ) {
     	for ( int j = 0; j < COLS_PER_THREAD_C; j++ ) {
     		for ( int k = 0; k < dimN; k++ ) {
-    			myC[i*COLS_PER_THREAD_C + j] += myA[i*dimN + k] * myBt[j*dimN + k];
+    			temp += myA[i*dimN + k] * myBt[j*dimN + k];
     		}
+    		myC[i*COLS_PER_THREAD_C + j] = temp;
+    		temp = 0;
     	}
     }
 

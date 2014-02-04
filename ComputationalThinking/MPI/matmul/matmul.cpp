@@ -146,10 +146,6 @@ int main ( int argc, char **argv ) {
     /* Take time */
     times[3] = MPI_Wtime();
 
-    /* Finalize MPI task */
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;
-    retVal = MPI_Finalize();
-
 	/* Print results */
     if ( rank == 0 ) std::cout << "RANK\tN_TASKS\tDIM\tEXEC\t\tCALC" << std::endl;
     MPI_Barrier ( MPI_COMM_WORLD );
@@ -158,6 +154,10 @@ int main ( int argc, char **argv ) {
     		std::cout << rank << "\t" << numTasks << "\t" << dimN << "\t" << times[3]-times[0] << "\t\t" << times[2]-times[1] << std::endl;
     	}
     }
+
+    /* Finalize MPI task */
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;
+    retVal = MPI_Finalize();
 
 	/* Free memory */
     free(myA); free(Bt); free(myC);

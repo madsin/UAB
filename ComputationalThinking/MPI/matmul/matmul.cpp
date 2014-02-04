@@ -97,8 +97,19 @@ int main ( int argc, char **argv ) {
 
     /* Divide data */
     /* Broadcast B */
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Bcast(), Time=" << MPI_Wtime()-times[0] << std::endl;
-    MPI_Bcast ( Bt, dimM*dimN, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+    MPI_Status bla[numTasks];
+    if (rank == 0) {
+    	for ( int i = 1; i < numTasks; i++ ) {
+    		if (DEBUG) std::cout << "P" << rank << ": MPI_Send(Bt), Time=" << MPI_Wtime()-times[0] << std::endl;
+    		MPI_Send ( Bt, dimM*dimN, MPI_DOUBLE, i, 0, MPI_COMM_WORLD );
+    	}
+    } else {
+    	if (DEBUG) std::cout << "P" << rank << ": MPI_Recv(Bt), Time=" << MPI_Wtime()-times[0] << std::endl;
+    	MPI_Recv( Bt, dimM*dimN, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &bla[rank] );
+    }
+
+    //if (DEBUG) std::cout << "P" << rank << ": MPI_Bcast(), Time=" << MPI_Wtime()-times[0] << std::endl;
+    //MPI_Bcast ( Bt, dimM*dimN, MPI_DOUBLE, 0, MPI_COMM_WORLD );
 
     /* Scatter A */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(), Time=" << MPI_Wtime()-times[0] << std::endl;

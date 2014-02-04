@@ -151,7 +151,6 @@ int main ( int argc, char **argv ) {
     /* Divide A and Bt */
     if ( rank == 0 ) {
     	int start;
-    	if (DEBUG) std::cout << "P" << rank << ": MPI_ISend(), Time=" << MPI_Wtime()-times[0] << std::endl;
     	for ( int dest = 0; dest < numTasks; dest++ ) {
     		/* Calculate start address */
     		start = rowsPerThreadA*dimN*floor((double) dest/threadsPerRowCol);
@@ -163,14 +162,16 @@ int main ( int argc, char **argv ) {
 				continue;
     		}
 
+    		if (DEBUG) std::cout << "P" << rank << ": MPI_Send(P" << dest << "), Time=" << MPI_Wtime()-times[0] << std::endl;
+
     		/* Non-blocking send */
-    		MPI_Send ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD );
-    		//MPI_Isend ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD, &reqsA[dest] );
+    		//MPI_Send ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD );
+    		MPI_Isend ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD, &reqsA[dest] );
 
     		start = rowsPerThreadBt*dimN*(dest % threadsPerRowCol);
     		/* Non-blocking send */
-    		MPI_Send ( &Bt[start], rowsPerThreadBt*dimN, MPI_DOUBLE, dest, 2, MPI_COMM_WORLD );
-    		//MPI_Isend ( &Bt[start], rowsPerThreadBt*dimN, MPI_DOUBLE, dest, 2, MPI_COMM_WORLD, &reqsBt[dest] );
+    		//MPI_Send ( &Bt[start], rowsPerThreadBt*dimN, MPI_DOUBLE, dest, 2, MPI_COMM_WORLD );
+    		MPI_Isend ( &Bt[start], rowsPerThreadBt*dimN, MPI_DOUBLE, dest, 2, MPI_COMM_WORLD, &reqsBt[dest] );
     	}
     } else {
 		/* Blocking receive */

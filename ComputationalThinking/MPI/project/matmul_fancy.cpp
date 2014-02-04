@@ -164,10 +164,12 @@ int main ( int argc, char **argv ) {
     /* Take time */
     times[0] = MPI_Wtime();
 
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(A), Time=" << MPI_Wtime()-times[0] << std::endl;
     MPI_Scatter ( toScatterA, rowsPerThreadA*dimN, MPI_DOUBLE,
     		      myA, rowsPerThreadA*dimN, MPI_DOUBLE,
     		      0, MPI_COMM_WORLD );
 
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(B), Time=" << MPI_Wtime()-times[0] << std::endl;
     MPI_Scatter ( toScatterBt, rowsPerThreadBt*dimN, MPI_DOUBLE,
     		      myBt, rowsPerThreadBt*dimN, MPI_DOUBLE,
     		      0, MPI_COMM_WORLD );

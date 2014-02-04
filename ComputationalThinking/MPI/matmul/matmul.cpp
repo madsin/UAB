@@ -3,7 +3,7 @@
 #include <iostream>
 #include <time.h>
 
-#define DEBUG 0
+#define DEBUG 1
 
 void printMat ( double *const M, const int sizeM, const int sizeN ) {
 	for ( int i = 0; i < sizeM; i++ ) {
@@ -78,7 +78,7 @@ int main ( int argc, char **argv ) {
         	}
         }
 
-        if (DEBUG) {
+        if (DEBUG && dimM<12 ) {
 			std::cout << "A=" << std::endl;
 			printMat ( A, dimM, dimN );
 			std::cout << "Bt=" << std::endl;
@@ -97,13 +97,13 @@ int main ( int argc, char **argv ) {
 
     /* Divide data */
     /* Broadcast B */
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Bcast()" << std::endl;
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Bcast(), Time=" << MPI_Wtime()-times[0] << std::endl;
     MPI_Bcast ( Bt, dimM*dimN, MPI_DOUBLE, 0, MPI_COMM_WORLD );
 
     /* Scatter A */
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter()" << std::endl;
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(), Time=" << MPI_Wtime()-times[0] << std::endl;
     MPI_Scatter ( A, stepSize*dimN, MPI_DOUBLE, myA, stepSize*dimN, MPI_DOUBLE, 0, MPI_COMM_WORLD );
-    if ( (DEBUG) && ( dimM < 8 ) ) {
+    if ( (DEBUG) && ( dimM < 12 ) ) {
     	std::cout << "P" << rank << ": myA = ";
     	for ( int i = 0; i < stepSize*dimN; i++ ) {
     		std::cout << myA[i] << " ";
@@ -115,7 +115,7 @@ int main ( int argc, char **argv ) {
     times[1] = MPI_Wtime();
 
     /* Calculation */
-    if (DEBUG) std::cout << "P" << rank << ": Calculation()" << std::endl;
+    if (DEBUG) std::cout << "P" << rank << ": Calculation(), Time=" << MPI_Wtime()-times[0] << std::endl;
     for ( int i = 0; i < stepSize; i++ ) {
     	for ( int j = 0; j < dimM; j++ ) {
     		for ( int k = 0; k < dimN; k++ ) {
@@ -134,7 +134,7 @@ int main ( int argc, char **argv ) {
     }
 
 	/* Data gathering */
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Gather()" << std::endl;
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Gather(), Time=" << MPI_Wtime()-times[0] << std::endl;
     MPI_Gather( myC, stepSize*dimM, MPI_DOUBLE, C, stepSize*dimM, MPI_DOUBLE, 0, MPI_COMM_WORLD );
 
 	/* Print results */
@@ -156,7 +156,7 @@ int main ( int argc, char **argv ) {
     }
 
     /* Finalize MPI task */
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;
+    if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize(), Time=" << MPI_Wtime()-times[0] << std::endl;
     retVal = MPI_Finalize();
 
 	/* Free memory */

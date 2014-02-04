@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define ROWS_PER_THREAD_C  (rowsPerThreadA)
 #define COLS_PER_THREAD_C  (rowsPerThreadBt)
 
@@ -259,8 +259,13 @@ int main ( int argc, char **argv ) {
     }
 
 	/* Print results */
-	std::cout << "P" << rank << ": Execution time: " << times[3]-times[0]
-	          << ", Calculation time: " << times[2]-times[1] << std::endl;
+    if ( rank == 0 ) std::cout << "RANK\tN_TASKS\tDIM\tEXEC\t\tCALC" << std::endl;
+    MPI_Barrier ( MPI_COMM_WORLD );
+    for ( int i = 0; i < numTasks; i++ ) {
+    	if ( rank == i ) {
+    		std::cout << rank << "\t" << numTasks << "\t" << dimN << "\t" << times[3]-times[0] << "\t\t" << times[2]-times[1] << std::endl;
+    	}
+    }
 
     /* Finalize MPI task */
     if (DEBUG) std::cout << "P" << rank << ": MPI_Finalize()" << std::endl;

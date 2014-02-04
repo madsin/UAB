@@ -141,38 +141,44 @@ int main ( int argc, char **argv ) {
     	myC[i] = 0;
     }
 
-    /* Restructure data */
-    double *toScatterA, *toScatterBt;
-    if ( rank == 0 ) {
-    	/* Allocate space lan */
-    	toScatterA  = (double *) malloc ( threadsPerRowCol*dimM *dimN*sizeof(double) );
-    	toScatterBt = (double *) malloc ( threadsPerRowCol*dimO*dimN*sizeof(double) );
-
-    	/* Do it */
-    	for ( int i = 0; i < threadsPerRowCol; i++ ) {
-    		for ( int j = 0; j < threadsPerRowCol; j++ ) {
-    			memcpy ( &toScatterA [j*rowsPerThreadA *dimN + i*rowsPerThreadA *dimN*threadsPerRowCol], &A [i*rowsPerThreadA *dimN], rowsPerThreadA *dimN*sizeof(double) );
-    			memcpy ( &toScatterBt[j*rowsPerThreadBt*dimN + i*rowsPerThreadBt*dimN*threadsPerRowCol], &Bt[j*rowsPerThreadBt*dimN], rowsPerThreadBt*dimN*sizeof(double) );
-    		}
-    	}
-    }
+    /* Take time */
+    times[0] = MPI_Wtime();
 
     /***************/
     /* Divide data */
     /***************/
 
-    /* Take time */
-    times[0] = MPI_Wtime();
+    /* Divide A and Bt */
+    if ( rank == 0 ) {
+    	int start;
+    	for ( int dest = 0; dest < numTasks; dest++ ) {
+    		/* Calculate start address */
+    		start = rowsPerThreadA*dimN*floor((double) dest/threadsPerRowCol);
 
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(A), Time=" << MPI_Wtime()-times[0] << std::endl;
-    MPI_Scatter ( toScatterA, rowsPerThreadA*dimN, MPI_DOUBLE,
-    		      myA, rowsPerThreadA*dimN, MPI_DOUBLE,
-    		      0, MPI_COMM_WORLD );
+    		/* Get own myA, myBt */
+    		if ( dest == 0) {
+				memcpy ( myA, &A[start], rowsPerThreadA*dimN*sizeof(double));
+				memcpy ( myBt, &Bt[start], rowsPerThreadBt*dimN*sizeof(double));
+				continue;
+    		}
 
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(B), Time=" << MPI_Wtime()-times[0] << std::endl;
-    MPI_Scatter ( toScatterBt, rowsPerThreadBt*dimN, MPI_DOUBLE,
-    		      myBt, rowsPerThreadBt*dimN, MPI_DOUBLE,
-    		      0, MPI_COMM_WORLD );
+    		if (DEBUG) std::cout << "P" << rank << ": MPI_Send(P" << dest << "), Time=" << MPI_Wtime()-times[0] << std::endl;
+
+    		/* Non-blocking send */
+    		//MPI_Send ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD );
+    		MPI_Isend ( &A[start], rowsPerThreadA*dimN, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD, &reqsA[dest] );
+
+    		start = rowsPerThreadBt*dimN*(dest % threadsPerRowCol);
+    		/* Non-blocking send */
+    		//MPI_Send ( &Bt[start], rowsPerThreadBt*dimN, MPI_DOUBLE, dest, 2, MPI_COMM_WORLD );
+    		MPI_Isend ( &Bt[start], rowsPerThreadBt*dimN, MPI_DOUBLE, dest, 2, MPI_COMM_WORLD, &reqsBt[dest] );
+    	}
+    } else {
+		/* Blocking receive */
+		if (DEBUG) std::cout << "P" << rank << ": MPI_Recv(A), Time=" << MPI_Wtime()-times[0] << std::endl;
+		MPI_Recv ( myA,  rowsPerThreadA*dimN,  MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &statsA[rank] );
+		MPI_Recv ( myBt, rowsPerThreadBt*dimN, MPI_DOUBLE, 0, 2, MPI_COMM_WORLD, &statsBt[rank] );
+    }
 
 	/* Debugging stuff */
     if (DEBUG && dimM<12) {

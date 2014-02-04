@@ -2,7 +2,7 @@
 
 # 10 minutes and test.q for now TODO
 export QUEUE="aolin.q"
-export QSUB0="qsub -q ${QUEUE} -v SGE_QMASTER_PORT -cwd -l h_rt=900"
+export QSUB0="qsub -q ${QUEUE} -l excl -v SGE_QMASTER_PORT -cwd -l h_rt=900"
 
 export MPI_DIR=/home/master/master29/UAB/ComputationalThinking/MPI
 
@@ -15,47 +15,18 @@ echo "# Matrix Multiplication #"
 echo "#########################"
 
 # Assume dimM = dimO = dimN
-for DIM in 1920 #3360 5280 6720 8640
-do
-    for N_TASKS in 8 16 24 32 40
-    do
-        # Slow Matmul
-        cd ${MPI_DIR}/matmul/
-        QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
-        echo $QSUB
-        echo $($QSUB)
-        echo "#########################"
-    done
-done
-
-# Failed ones
-N_TASKS=24
-DIM=3360
-QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
-echo $QSUB
-echo $($QSUB)
-echo "#########################"
-
-N_TASKS=32
-DIM=3360
-QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
-echo $QSUB
-echo $($QSUB)
-echo "#########################"
-
-N_TASKS=32
-DIM=5200
-QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
-echo $QSUB
-echo $($QSUB)
-echo "#########################"
-
-N_TASKS=8
-DIM=5200
-QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
-echo $QSUB
-echo $($QSUB)
-echo "#########################"
+#for DIM in 1920 #3360 5280 6720 8640
+#do
+#    for N_TASKS in 8 16 24 32 40
+#    do
+#        # Slow Matmul
+#        cd ${MPI_DIR}/matmul/
+#        QSUB="${QSUB0} -N matmul_slow_${N_TASKS}_${DIM}.log -pe mpi-RR ${N_TASKS} run.sh ${N_TASKS} ${DIM} ${DIM}"
+#        echo $QSUB
+#        echo $($QSUB)
+#        echo "#########################"
+#    done
+#done
 
 # Assume dimM = dimO = dimN
 #for DIM in 1680 3360 5040 6720 8400 
@@ -70,6 +41,20 @@ echo "#########################"
 #        echo "#########################"
 #    done
 #done
+
+# Assume dimM = dimO = dimN
+for DIM in 1692 3348 5040 6732 8388
+do
+    for N_TASKS in 4 9
+    do
+        # Fast Matmul ! with openMP
+        cd ${MPI_DIR}/project/
+        QSUB="${QSUB0} -N matmul_fast_${N_TASKS}_${DIM}.log -pe mpi-RR 40 run.sh ${N_TASKS} ${DIM} ${DIM} ${DIM}"
+        echo $QSUB
+        echo $($QSUB)
+        echo "#########################"
+    done
+done
 
 # Jacobi
 #echo "#########################"

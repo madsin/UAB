@@ -1,0 +1,247 @@
+# started on Sat Feb  8 18:26:42 2014
+
+
+ Performance counter stats for './gcc_masterOMP_original.out 2000':
+
+      59851,522649 task-clock                #    0,997 CPUs utilized          
+             6.011 context-switches          #    0,100 K/sec                  
+                 6 CPU-migrations            #    0,000 K/sec                  
+             1.658 page-faults               #    0,028 K/sec                  
+   202.068.120.424 cycles                    #    3,376 GHz                    
+   137.441.401.664 stalled-cycles-frontend   #   68,02% frontend cycles idle   
+    66.427.219.523 stalled-cycles-backend    #   32,87% backend  cycles idle   
+   128.384.288.357 instructions              #    0,64  insns per cycle        
+                                             #    1,07  stalled cycles per insn
+    16.062.392.471 branches                  #  268,371 M/sec                  
+        12.153.255 branch-misses             #    0,08% of all branches        
+
+      60,022127948 seconds time elapsed
+
+# started on Sat Feb  8 18:27:42 2014
+
+
+ Performance counter stats for './gcc_masterOMP_v1.out 2000':
+
+      48417,282991 task-clock                #    0,997 CPUs utilized          
+             4.862 context-switches          #    0,100 K/sec                  
+                 2 CPU-migrations            #    0,000 K/sec                  
+             1.658 page-faults               #    0,034 K/sec                  
+   163.420.298.766 cycles                    #    3,375 GHz                    
+   100.356.432.010 stalled-cycles-frontend   #   61,41% frontend cycles idle   
+    67.519.262.465 stalled-cycles-backend    #   41,32% backend  cycles idle   
+   112.344.495.790 instructions              #    0,69  insns per cycle        
+                                             #    0,89  stalled cycles per insn
+    16.055.599.756 branches                  #  331,609 M/sec                  
+        11.385.888 branch-misses             #    0,07% of all branches        
+
+      48,553652549 seconds time elapsed
+
+# started on Sat Feb  8 18:28:30 2014
+
+
+ Performance counter stats for './gcc_masterOMP_v2.out 2000':
+
+      32166,617387 task-clock                #    0,997 CPUs utilized          
+             3.231 context-switches          #    0,100 K/sec                  
+                 0 CPU-migrations            #    0,000 K/sec                  
+             2.317 page-faults               #    0,072 K/sec                  
+   108.592.370.208 cycles                    #    3,376 GHz                    
+    60.448.832.948 stalled-cycles-frontend   #   55,67% frontend cycles idle   
+    25.730.842.778 stalled-cycles-backend    #   23,69% backend  cycles idle   
+    96.267.721.591 instructions              #    0,89  insns per cycle        
+                                             #    0,63  stalled cycles per insn
+     8.041.994.809 branches                  #  250,011 M/sec                  
+         7.009.178 branch-misses             #    0,09% of all branches        
+
+      32,257829703 seconds time elapsed
+
+# started on Sat Feb  8 18:29:03 2014
+
+
+ Performance counter stats for './gcc_masterOMP_v3.out 2000':
+
+      16794,855048 task-clock                #    0,997 CPUs utilized          
+             1.692 context-switches          #    0,101 K/sec                  
+                 0 CPU-migrations            #    0,000 K/sec                  
+             2.317 page-faults               #    0,138 K/sec                  
+    56.684.161.757 cycles                    #    3,375 GHz                    
+    29.867.295.287 stalled-cycles-frontend   #   52,69% frontend cycles idle   
+    10.403.105.120 stalled-cycles-backend    #   18,35% backend  cycles idle   
+    64.312.940.673 instructions              #    1,13  insns per cycle        
+                                             #    0,46  stalled cycles per insn
+     4.047.720.526 branches                  #  241,010 M/sec                  
+         6.233.090 branch-misses             #    0,15% of all branches        
+
+      16,843779267 seconds time elapsed
+
+# started on Sat Feb  8 18:54:55 2014
+
+ 4 Threads
+ Performance counter stats for './gcc_masterOMP_v4.out 2000':
+
+      19411,135547 task-clock                #    3,958 CPUs utilized          
+             1.972 context-switches          #    0,102 K/sec                  
+                12 CPU-migrations            #    0,001 K/sec                  
+             2.328 page-faults               #    0,120 K/sec                  
+    63.009.458.250 cycles                    #    3,246 GHz                    
+    35.794.396.218 stalled-cycles-frontend   #   56,81% frontend cycles idle   
+    15.051.796.742 stalled-cycles-backend    #   23,89% backend  cycles idle   
+    64.316.668.417 instructions              #    1,02  insns per cycle        
+                                             #    0,56  stalled cycles per insn
+     4.049.235.971 branches                  #  208,604 M/sec                  
+         6.022.482 branch-misses             #    0,15% of all branches        
+
+       4,904773461 seconds time elapsed
+
+# started on Sat Feb  8 18:29:19 2014
+
+ 8 Threads
+ Performance counter stats for './gcc_masterOMP_v4.out 2000':
+
+      23484,586912 task-clock                #    7,852 CPUs utilized          
+             2.605 context-switches          #    0,111 K/sec                  
+                 7 CPU-migrations            #    0,000 K/sec                  
+             2.336 page-faults               #    0,099 K/sec                  
+    76.229.242.257 cycles                    #    3,246 GHz                    
+    43.222.160.255 stalled-cycles-frontend   #   56,70% frontend cycles idle   
+    11.618.360.920 stalled-cycles-backend    #   15,24% backend  cycles idle   
+    64.335.916.705 instructions              #    0,84  insns per cycle        
+                                             #    0,67  stalled cycles per insn
+     4.053.969.742 branches                  #  172,623 M/sec                  
+         4.575.718 branch-misses             #    0,11% of all branches        
+
+       2,990940581 seconds time elapsed
+
+# started on Sat Feb  8 18:29:22 2014
+
+
+ Performance counter stats for './icc_masterOMP_original.out 2000':
+
+      14142,736155 task-clock                #    0,997 CPUs utilized          
+             1.423 context-switches          #    0,101 K/sec                  
+                 0 CPU-migrations            #    0,000 K/sec                  
+             1.720 page-faults               #    0,122 K/sec                  
+    47.763.512.068 cycles                    #    3,377 GHz                    
+    29.788.714.085 stalled-cycles-frontend   #   62,37% frontend cycles idle   
+    18.954.611.583 stalled-cycles-backend    #   39,68% backend  cycles idle   
+    38.428.920.976 instructions              #    0,80  insns per cycle        
+                                             #    0,78  stalled cycles per insn
+     2.077.306.588 branches                  #  146,882 M/sec                  
+         9.782.180 branch-misses             #    0,47% of all branches        
+
+      14,184023284 seconds time elapsed
+
+# started on Sat Feb  8 18:29:37 2014
+
+
+ Performance counter stats for './icc_masterOMP_v1.out 2000':
+
+      13394,349061 task-clock                #    0,997 CPUs utilized          
+             1.345 context-switches          #    0,100 K/sec                  
+                 0 CPU-migrations            #    0,000 K/sec                  
+             1.721 page-faults               #    0,128 K/sec                  
+    45.231.919.189 cycles                    #    3,377 GHz                    
+    28.476.231.330 stalled-cycles-frontend   #   62,96% frontend cycles idle   
+    19.538.116.710 stalled-cycles-backend    #   43,20% backend  cycles idle   
+    30.437.885.911 instructions              #    0,67  insns per cycle        
+                                             #    0,94  stalled cycles per insn
+     2.068.788.140 branches                  #  154,452 M/sec                  
+         9.733.778 branch-misses             #    0,47% of all branches        
+
+      13,432989339 seconds time elapsed
+
+# started on Sat Feb  8 18:29:50 2014
+
+
+ Performance counter stats for './icc_masterOMP_v2.out 2000':
+
+      18293,099068 task-clock                #    0,997 CPUs utilized          
+             1.838 context-switches          #    0,100 K/sec                  
+                20 CPU-migrations            #    0,001 K/sec                  
+             2.379 page-faults               #    0,130 K/sec                  
+    61.788.740.581 cycles                    #    3,378 GHz                    
+    21.442.417.788 stalled-cycles-frontend   #   34,70% frontend cycles idle   
+     9.844.799.371 stalled-cycles-backend    #   15,93% backend  cycles idle   
+    88.157.279.409 instructions              #    1,43  insns per cycle        
+                                             #    0,24  stalled cycles per insn
+     4.020.247.343 branches                  #  219,769 M/sec                  
+         4.301.277 branch-misses             #    0,11% of all branches        
+
+      18,345063954 seconds time elapsed
+
+# started on Sat Feb  8 18:30:08 2014
+
+
+ Performance counter stats for './icc_masterOMP_v3.out 2000':
+
+      14494,995136 task-clock                #    0,997 CPUs utilized          
+             1.457 context-switches          #    0,101 K/sec                  
+                 0 CPU-migrations            #    0,000 K/sec                  
+             2.379 page-faults               #    0,164 K/sec                  
+    48.968.789.456 cycles                    #    3,378 GHz                    
+    28.836.262.260 stalled-cycles-frontend   #   58,89% frontend cycles idle   
+    16.581.206.117 stalled-cycles-backend    #   33,86% backend  cycles idle   
+    42.234.864.501 instructions              #    0,86  insns per cycle        
+                                             #    0,68  stalled cycles per insn
+     2.028.982.589 branches                  #  139,978 M/sec                  
+         4.291.414 branch-misses             #    0,21% of all branches        
+
+      14,536800327 seconds time elapsed
+
+# started on Sat Feb  8 18:55:00 2014
+
+ 4 Threads
+ Performance counter stats for './icc_masterOMP_v4.out 2000':
+
+      16681,339569 task-clock                #    3,928 CPUs utilized          
+             1.757 context-switches          #    0,105 K/sec                  
+                16 CPU-migrations            #    0,001 K/sec                  
+             2.597 page-faults               #    0,156 K/sec                  
+    54.119.452.780 cycles                    #    3,244 GHz                    
+    33.968.171.465 stalled-cycles-frontend   #   62,77% frontend cycles idle   
+    23.066.226.182 stalled-cycles-backend    #   42,62% backend  cycles idle   
+    42.272.435.578 instructions              #    0,78  insns per cycle        
+                                             #    0,80  stalled cycles per insn
+     2.040.825.432 branches                  #  122,342 M/sec                  
+         3.978.257 branch-misses             #    0,19% of all branches        
+
+       4,247263635 seconds time elapsed
+
+# started on Sat Feb  8 18:30:23 2014
+
+ 8 Threads
+ Performance counter stats for './icc_masterOMP_v4.out 2000':
+
+      19397,781420 task-clock                #    7,333 CPUs utilized          
+             2.192 context-switches          #    0,113 K/sec                  
+                 9 CPU-migrations            #    0,000 K/sec                  
+             2.645 page-faults               #    0,136 K/sec                  
+    62.943.511.699 cycles                    #    3,245 GHz                    
+    38.448.297.583 stalled-cycles-frontend   #   61,08% frontend cycles idle   
+    15.020.475.312 stalled-cycles-backend    #   23,86% backend  cycles idle   
+    42.591.127.684 instructions              #    0,68  insns per cycle        
+                                             #    0,90  stalled cycles per insn
+     2.138.688.512 branches                  #  110,254 M/sec                  
+         2.536.987 branch-misses             #    0,12% of all branches        
+
+       2,645123791 seconds time elapsed
+
+# started on Sat Feb  8 18:30:26 2014
+
+
+ Performance counter stats for './icc_parallel_masterOMP_original.out 2000':
+
+      10406,384177 task-clock                #    7,283 CPUs utilized          
+             1.257 context-switches          #    0,121 K/sec                  
+                 8 CPU-migrations            #    0,001 K/sec                  
+             5.889 page-faults               #    0,566 K/sec                  
+    33.741.606.817 cycles                    #    3,242 GHz                    
+    23.043.479.486 stalled-cycles-frontend   #   68,29% frontend cycles idle   
+    10.590.370.838 stalled-cycles-backend    #   31,39% backend  cycles idle   
+    29.457.897.455 instructions              #    0,87  insns per cycle        
+                                             #    0,78  stalled cycles per insn
+       562.578.969 branches                  #   54,061 M/sec                  
+         1.843.815 branch-misses             #    0,33% of all branches        
+
+       1,428852565 seconds time elapsed
+

@@ -45,8 +45,8 @@ struct find_rain_by_site {
 unsigned int TotalRainIN ( thrust::device_vector<unsigned int>& S, 
                            thrust::device_vector<unsigned int>& M, 
                            const unsigned int St) {
-    thrust::transform(S.begin(), S.end(), M.begin(), M.end(), find_rain_by_site(St));
-    return thrust::reduce(S.begin(), S.end());
+    thrust::transform(S.begin(), S.end(), M.begin(), M.begin(), find_rain_by_site(St));
+    return thrust::reduce(M.begin(), M.end());
 }
 
 struct find_rain_by_days {
@@ -63,7 +63,7 @@ struct find_rain_by_days {
 unsigned int TotalRainBetween ( thrust::device_vector<unsigned int>& D, 
                                 thrust::device_vector<unsigned int>& M, 
                                 const unsigned int Start, const unsigned int End) {
-    thrust::transform(D.begin(), D.end(), M.begin(), M.end(), find_rain_by_days(Start, End));
+    thrust::transform(D.begin(), D.end(), M.begin(), M.begin(), find_rain_by_days(Start, End));
     return thrust::reduce(M.begin(), M.end());
 }
 
@@ -71,22 +71,10 @@ unsigned int TotalDaysWithRain ( thrust::device_vector<unsigned int>& D) {
   return thrust::distance( D.begin(), thrust::unique ( D.begin(), D.end() ) );
 }
 
-struct greater_than {
-    const int value;
-
-    greater_than(unsigned int _value) : value(_value) {}
-
-    __host__ __device__
-    bool operator()(int &x) {
-        return x > value;
-    }
-};
-
 unsigned int TotalDaysRainHigher( thrust::device_vector<unsigned int>& D, 
                                   thrust::device_vector<unsigned int>& M, 
                                   const unsigned int Min) {
-    thrust::reduce_by_key(D.begin(), D.end(), M.begin(), D.begin(), M.begin());
-    return thrust::count_if(M.begin(), M.end(), greater_than(Min));
+	return 0;
 }
 
 bool Option ( char o, thrust::device_vector<unsigned int>& Days, 

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <omp.h>
 
 void init_vect(double *M, int N)
 {
@@ -81,7 +82,9 @@ void f1_vect ( double *x, double r, int N )
 void do_op ( double *const a, double *const b, double *const bt, double *restrict c, int N )
 {
   int i, j, k;
-  double temp = 0;
+  double register temp = 0;
+
+  omp_set_num_threads(4);
 
 #pragma omp parallel for private(j, k, temp)
   for (i=0; i<N; i++)

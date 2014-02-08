@@ -1,0 +1,39 @@
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+Total of 29509 iterations performed P0: Execution time = 389.739 Calculation time = 53.1285 P1: Execution time = 389.815 Calculation time = 54.9459 P2: Execution time = 389.814 Calculation time = 54.3513 P14: Execution time = 389.813 Calculation time = 54.1705 P4: Execution time = 389.815 Calculation time = 54.2377 P3: Execution time = 389.816 Calculation time = 53.9869 P5: Execution time = 389.814 Calculation time = 55.4918 P15: Execution time = 389.811 Calculation time = 52.8466 P8: Execution time = 389.816 Calculation time = 54.2739 P9: Execution time = 389.815 Calculation time = 54.3221 P12: Execution time = 389.815 Calculation time = 55.3042 P13: Execution time = 389.814 Calculation time = 53.5136 P6: Execution time = 389.813 Calculation time = 53.9593 P11: Execution time = 389.815 Calculation time = 54.3607 P10: Execution time = 389.814 Calculation time = 55.8209 P7: Execution time = 389.813 Calculation time = 55.6172
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+P1: Execution time = 581.659 Calculation time = 179.94 Total of 44328 iterations performed P0: Execution time = 581.516 Calculation time = 180.417 P8: Execution time = 581.663 Calculation time = 182.469 P2: Execution time = 581.663 Calculation time = 179.579 P5: Execution time = 581.66 Calculation time = 179.924 P9: Execution time = 581.662 Calculation time = 181.737 P3: Execution time = 581.66 Calculation time = 183.565 P4: Execution time = 581.662 Calculation time = 179.618 P10: Execution time = 581.662 Calculation time = 179.669 P14: Execution time = 581.662 Calculation time = 180.174 P11: Execution time = 581.657 Calculation time = 183.086 P7: Execution time = 581.656 Calculation time = 182.834 P6: Execution time = 581.662 Calculation time = 182.377 P15: Execution time = 581.655 Calculation time = 177.292 P13: Execution time = 581.661 Calculation time = 177.057 P12: Execution time = 581.662 Calculation time = 177.799
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+P14: Execution time = 402.268 Calculation time = 27.2734 P9: Execution time = 402.278 Calculation time = 27.0137 P26: Execution time = 402.283 Calculation time = 26.8323 P10: Execution time = 402.278 Calculation time = 27.0712 P27: Execution time = 402.277 Calculation time = 28.3805 P15: Execution time = 402.272 Calculation time = 28.0502 P8: Execution time = 402.279 Calculation time = 27.4659 P28: Execution time = 402.276 Calculation time = 26.7878 P16: Execution time = 402.284 Calculation time = 28.1381 P29: Execution time = 402.269 Calculation time = 26.9054 P30: Execution time = 402.267 Calculation time = 26.9632 P31: Execution time = 402.27 Calculation time = 27.2376 P24: Execution time = 402.281 Calculation time = 26.8822 P18: Execution time = 402.285 Calculation time = 26.7695 P20: Execution time = 402.278 Calculation time = 26.8082 P23: Execution time = 402.281 Calculation time = 28.2495 P17: Execution time = 402.284 Calculation time = 27.1852 P21: Execution time = 402.278 Calculation time = 27.35 P11: Execution time = 402.277 Calculation time = 27.0614 P22: Execution time = 402.279 Calculation time = 28.063 P12: Execution time = 402.275 Calculation time = 26.7948 P13: Execution time = 402.27 Calculation time = 27.3576 P19: Execution time = 402.281 Calculation time = 26.7308 P25: Execution time = 402.284 Calculation time = 26.9517 Total of 30012 iterations performed P0: Execution time = 402.208 Calculation time = 26.7232 P1: Execution time = 402.271 Calculation time = 27.1596 P2: Execution time = 402.273 Calculation time = 26.7005 P3: Execution time = 402.28 Calculation time = 26.7537 P5: Execution time = 402.275 Calculation time = 28.717 P6: Execution time = 402.276 Calculation time = 26.5942 P7: Execution time = 402.282 Calculation time = 26.6121 P4: Execution time = 402.277 Calculation time = 26.6121
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+P1: Execution time = 863.354 Calculation time = 90.7482 P2: Execution time = 863.355 Calculation time = 92.8281 P3: Execution time = 863.364 Calculation time = 93.1013 Total of 44640 iterations performed P0: Execution time = 863.211 Calculation time = 92.7015 P6: Execution time = 863.362 Calculation time = 91.1654 P9: Execution time = 863.362 Calculation time = 93.2983 P16: Execution time = 863.365 Calculation time = 91.2383 P17: Execution time = 863.364 Calculation time = 90.3508 P30: Execution time = 863.361 Calculation time = 90.4043 P28: Execution time = 863.362 Calculation time = 90.7005 P10: Execution time = 863.363 Calculation time = 90.6499 P14: Execution time = 863.361 Calculation time = 91.675 P31: Execution time = 863.362 Calculation time = 90.3915 P26: Execution time = 863.364 Calculation time = 90.4621 P4: Execution time = 863.364 Calculation time = 91.9403 P8: Execution time = 863.364 Calculation time = 90.353 P15: Execution time = 863.361 Calculation time = 91.0306 P29: Execution time = 863.362 Calculation time = 90.5911 P27: Execution time = 863.361 Calculation time = 92.1924 P20: Execution time = 863.364 Calculation time = 91.3082 P21: Execution time = 863.364 Calculation time = 90.562 P22: Execution time = 863.364 Calculation time = 90.4736 P5: Execution time = 863.361 Calculation time = 90.3974 P23: Execution time = 863.363 Calculation time = 91.4013 P7: Execution time = 863.366 Calculation time = 90.7232 P24: Execution time = 863.362 Calculation time = 90.4406 P25: Execution time = 863.364 Calculation time = 90.5065 P19: Execution time = 863.364 Calculation time = 90.7037 P11: Execution time = 863.361 Calculation time = 91.8876 P12: Execution time = 863.363 Calculation time = 90.8637 P18: Execution time = 863.365 Calculation time = 91.0387 P13: Execution time = 863.365 Calculation time = 90.6499
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+--------------------------------------------------------------------------
+A daemon (pid 20606) died unexpectedly with status 137 while attempting
+to launch so we are aborting.
+
+There may be more information reported by the environment (see above).
+
+This may be because the daemon was unable to find all the needed shared
+libraries on the remote node. You may set your LD_LIBRARY_PATH to have the
+location of the shared libraries on the remote nodes and this will
+automatically be forwarded to the remote nodes.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that the job aborted, but has no info as to the process
+that caused that situation.
+--------------------------------------------------------------------------
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+P7: Execution time = 273.404 Calculation time = 107.218 Total of 29976 iterations performed P0: Execution time = 273.34 Calculation time = 106.614 P1: Execution time = 273.405 Calculation time = 106.505 P3: Execution time = 273.404 Calculation time = 106.82 P5: Execution time = 273.405 Calculation time = 107.205 P6: Execution time = 273.405 Calculation time = 106.378 P2: Execution time = 273.404 Calculation time = 107.896 P4: Execution time = 273.407 Calculation time = 106.723
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7
+Total of 44344 iterations performed P0: Execution time = 710.255 Calculation time = 362.331 P6: Execution time = 710.401 Calculation time = 357.668 P5: Execution time = 710.403 Calculation time = 357.208 P1: Execution time = 710.403 Calculation time = 365.494 P4: Execution time = 710.403 Calculation time = 358.782 P3: Execution time = 710.403 Calculation time = 360.336 P2: Execution time = 710.401 Calculation time = 360.504 P7: Execution time = 710.4 Calculation time = 361.139
+Currently Loaded Modulefiles:
+  1) modules     2) gcc/4.4.7

@@ -72,20 +72,19 @@ unsigned int TotalDaysWithRain ( thrust::device_vector<unsigned int>& D) {
 }
 
 struct greater_than_ten {
+    __host__ __device__
    bool operator () ( const int x ) {
       return x > 10;
    }
-}
+};
 
 unsigned int TotalDaysRainHigher( thrust::device_vector<unsigned int>& D, 
                                   thrust::device_vector<unsigned int>& M, 
                                   const unsigned int Min) {
-    thrust::pair<int*,int*> new_end;
-
-    thrust::reduce_by_key(D.begin(), D.end(), M.begin(), D.begin(), M.begin());
+    thrust::pair<thrust::device_vector<unsigned int>::iterator, thrust::device_vector<unsigned int>::iterator> new_end = thrust::reduce_by_key(D.begin(), D.end(), M.begin(), D.begin(), M.begin());
 
     if(Min == 10) {
-        return thrust::count_if(M.begin(), new_end.x, greater_than_ten());
+        return thrust::count_if(M.begin(), new_end.second, greater_than_ten());
     } else {
         // ...
     } 

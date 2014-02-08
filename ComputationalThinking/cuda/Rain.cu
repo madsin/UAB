@@ -18,16 +18,20 @@
 #define MAX_MEASUREMENT   8
 
 unsigned int TotalRain ( thrust::device_vector<unsigned int>& M) {
+  // Sum up all elements
   return thrust::reduce ( M.begin(), M.end() );
 }
 
 unsigned int TotalDaysRainInSite ( thrust::device_vector<unsigned int>& S, 
                                    const unsigned int Site) {
+  // Count occurrences of Site in S
   return thrust::count ( S.begin(), S.end(), Site );
 }
 
 unsigned int TotalSites ( thrust::device_vector<unsigned int>& S) {
+  // Sort by Sites
   thrust::sort ( S.begin(), S.end() );
+  // Count unique elements in S
   return thrust::distance( S.begin(), thrust::unique ( S.begin(), S.end() ) );
 }
 
@@ -45,7 +49,9 @@ struct find_rain_by_site {
 unsigned int TotalRainIN ( thrust::device_vector<unsigned int>& S, 
                            thrust::device_vector<unsigned int>& M, 
                            const unsigned int St) {
+    // if (S(i) != St) M(i)=0;
     thrust::transform(S.begin(), S.end(), M.begin(), M.begin(), find_rain_by_site(St));
+    // Reduce
     return thrust::reduce(M.begin(), M.end());
 }
 
@@ -63,11 +69,14 @@ struct find_rain_by_days {
 unsigned int TotalRainBetween ( thrust::device_vector<unsigned int>& D, 
                                 thrust::device_vector<unsigned int>& M, 
                                 const unsigned int Start, const unsigned int End) {
+    // if !(Start < D(i) < End) M(i)=0;
     thrust::transform(D.begin(), D.end(), M.begin(), M.begin(), find_rain_by_days(Start, End));
+    // Reduce
     return thrust::reduce(M.begin(), M.end());
 }
 
 unsigned int TotalDaysWithRain ( thrust::device_vector<unsigned int>& D) {
+  // Count unique elements in D
   return thrust::distance( D.begin(), thrust::unique ( D.begin(), D.end() ) );
 }
 
@@ -81,9 +90,16 @@ struct greater_than_ten {
 unsigned int TotalDaysRainHigher( thrust::device_vector<unsigned int>& D, 
                                   thrust::device_vector<unsigned int>& M, 
                                   const unsigned int Min) {
+    // Merges elements in M using D as key. If values in D identical, merge.
+    // Example
+    // D = 1 1 2 3 3  4
+    // M = 2 7 4 9 12 3
+    // D* = 1 2 3  4
+    // M* = 9 4 21 3
     thrust::pair<thrust::device_vector<unsigned int>::iterator, thrust::device_vector<unsigned int>::iterator> new_end = thrust::reduce_by_key(D.begin(), D.end(), M.begin(), D.begin(), M.begin());
 
     if(Min == 10) {
+        // Count elements in D* that are greater than ten
         return thrust::count_if(M.begin(), new_end.second, greater_than_ten());
     } else {
         // ...

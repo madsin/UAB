@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#define DEBUG 0
+#define DEBUG 1
 #define DIM (1024)
 #define PRECISION (1.0e-6)
 
@@ -29,7 +29,7 @@ int main ( int argc, char **argv ) {
     int numTasks, rank, stepSize;
     int itCount = 0;
     int dim, c;
-    double times[4], calcTime = 0;
+    double times[4], start, stop, calcTime = 0;
     double epsilon = 1;
     double *A, *b, *x, *x_old, *myA, *myB, *myX_new;
 
@@ -127,22 +127,28 @@ int main ( int argc, char **argv ) {
 
     /* Synchronous data distribution */
     // A
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(A)" << std::endl;
+    if (DEBUG) {
+    	start = MPI_Wtime();
+    }
     MPI_Scatter ( A, stepSize*dim, MPI_DOUBLE,
     		      myA, stepSize*dim, MPI_DOUBLE,
     		      0, MPI_COMM_WORLD );
     if (DEBUG) {
+    	stop = MPI_Wtime();
+    	std::cout << "P" << rank << ": MPI_Scatter(A) took " << stop-start << "s" << std::endl;
     	std::cout << "P" << rank << ": myA=" << std::endl;
     	for ( int i = 0; i < stepSize; i++ ) {
     		printVec ( &myA[i*dim], dim );
     	}
     }
     // b
-    if (DEBUG) std::cout << "P" << rank << ": MPI_Scatter(b)" << std::endl;
+    if (DEBUG) start = MPI_Wtime();
     MPI_Scatter ( b, stepSize, MPI_DOUBLE,
     		      myB, stepSize, MPI_DOUBLE,
     		      0, MPI_COMM_WORLD );
     if (DEBUG) {
+    	stop = MPI_Wtime();
+		std::cout << "P" << rank << ": MPI_Scatter(b) took " << stop-start << "s" << std::endl;
     	std::cout << "P" << rank << ": myB=" << std::endl;
     	for ( int i = 0; i < stepSize; i++ ) {
     		std::cout << myB[i] << " ";
@@ -166,11 +172,15 @@ int main ( int argc, char **argv ) {
     	}
 
     	/* Incremental synchronous data distribution */
-    	if (DEBUG) std::cout << "P" << rank << ": MPI_Bcast(x)" << std::endl;
+    	if (DEBUG) start = MPI_Wtime();
     	MPI_Bcast ( x, dim, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     	if ( (rank == 0) && (DEBUG) ) {
     		std::cout << "x_" << itCount-1 << "=" << std::endl;
     		printVec ( x, dim );
+    	}
+    	if (DEBUG) {
+    		stop = MPI_Wtime();
+			std::cout << "P" << rank << ": MPI_Bcast(x) took " << stop-start << "s" << std::endl;
     	}
 
     	/* Take time */
@@ -195,10 +205,14 @@ int main ( int argc, char **argv ) {
     	calcTime += times[2] - times[1];
 
     	/* Gather data */
-    	if (DEBUG) std::cout << "P" << rank << ": MPI_Gather(x)" << std::endl;
+    	if (DEBUG) start = MPI_Wtime();
     	MPI_Gather( myX_new, stepSize, MPI_DOUBLE,
     			    x, stepSize, MPI_DOUBLE,
     			    0, MPI_COMM_WORLD );
+    	if (DEBUG) {
+    		stop = MPI_Wtime();
+			std::cout << "P" << rank << ": MPI_Gather(x) took " << stop-start << "s" << std::endl;
+    	}
     	if ( (DEBUG) && (rank == 0) ) {
     		std::cout << "x_" << itCount << " =" << std::endl;
     		printVec ( x, dim );
@@ -207,11 +221,19 @@ int main ( int argc, char **argv ) {
     	/* Calculate epsilon */
     	if ( rank == 0 ) {
     		if (DEBUG) std::cout << "P" << rank << ": epsilon()" << std::endl;
+
+    		/* Take time */
+    		times[1] = MPI_Wtime();
+
     		epsilon = fabs ( x[0] - x_old[0] );
     		for ( int i = 1; i < dim; i++ ) {
     			double temp = fabs ( x[i] - x_old[i] );
     			if ( epsilon < temp ) epsilon = temp;
     		}
+
+    		/* Take time */
+    		times[2] = MPI_Wtime();
+    		calcTime += times[2]-times[1];
     	}
     	if (DEBUG) {
     		if (rank == 0) std::cout << "epsilon_" << itCount << " = " << epsilon << std::endl;

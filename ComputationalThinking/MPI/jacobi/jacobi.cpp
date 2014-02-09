@@ -35,7 +35,7 @@ int main ( int argc, char **argv ) {
     int itCount = 0;
     int dim, c;
     double times[4], start, stop, calcTime = 0;
-    double storeOldXTime = 0, bcastXTime = 0, gatherXNewTime = 0;
+    double storeOldXTime = 0, bcastXTime = 0, gatherXNewTime = 0, bcastEpsTime = 0;
     double epsilon = 1;
     double *A, *b, *x, *x_old, *myA, *myB, *myX_new;
 
@@ -241,7 +241,9 @@ int main ( int argc, char **argv ) {
     	if (DEBUG && (dim <= 16)) {
     		if (rank == 0) std::cout << "epsilon_" << itCount << " = " << epsilon << std::endl;
     	}
+    	if (DEBUG) start = MPI_Wtime();
     	MPI_Bcast ( &epsilon, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+    	if (DEBUG) bcastEpsTime += MPI_Wtime() - start;
     }
 
     /* Take time */
